@@ -8,6 +8,7 @@ require 'tdameritrade_api/price_history'
 require 'tdameritrade_api/streamer'
 require 'tdameritrade_api/watchlist'
 require 'tdameritrade_api/balances_and_positions'
+require 'tdameritrade_api/option_chain'
 
 module TDAmeritradeApi
   class Client
@@ -15,6 +16,7 @@ module TDAmeritradeApi
     include Streamer
     include Watchlist
     include BalancesAndPositions
+    include OptionChain
 
     attr_accessor :source_id, :user_id, :password
     attr_reader :login_response, :session_id, :accounts
