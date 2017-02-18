@@ -49,6 +49,7 @@ module TDAmeritradeApi
           while rd.read(2).bytes != [255,255]   # The terminator char is "\xFF\xFF"
             rd.seek(-2, IO::SEEK_CUR)
             bar = PriceHistoryBarRaw.read(rd)
+            puts bar
             prices << {
                 open: bar.open.round(2),
                 high: bar.high.round(2),
@@ -115,7 +116,7 @@ module TDAmeritradeApi
             bid_ask_size: q.css('bid-ask-size').text,
             last: q.css('last').text,
             last_trade_size: q.css('last-trade-size').text,
-            last_trade_time: parse_last_trade_date(q.css('last-trade-date').text),
+            #last_trade_time: parse_last_trade_date(q.css('last-trade-date').text),
             open: q.css('open').text,
             high: q.css('high').text,
             low: q.css('low').text,

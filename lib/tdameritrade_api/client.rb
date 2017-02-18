@@ -9,6 +9,10 @@ require 'tdameritrade_api/streamer'
 require 'tdameritrade_api/watchlist'
 require 'tdameritrade_api/balances_and_positions'
 require 'tdameritrade_api/option_chain'
+require 'tdameritrade_api/equity_trade'
+require 'tdameritrade_api/equity_order'
+require 'tdameritrade_api/quote_news'
+require 'tdameritrade_api/news'
 
 module TDAmeritradeApi
   class Client
@@ -17,14 +21,21 @@ module TDAmeritradeApi
     include Watchlist
     include BalancesAndPositions
     include OptionChain
+    include EquityTrade
+    include EquityOrder
+    include QuoteNews
+    include News
 
     attr_accessor :source_id, :user_id, :password
     attr_reader :login_response, :session_id, :accounts
 
-    def initialize
-      self.source_id=ENV['TDAMERITRADE_SOURCE_KEY']
-      self.user_id=ENV['TDAMERITRADE_USER_ID']
-      self.password=ENV['TDAMERITRADE_PASSWORD']
+    def initialize(options)
+      #self.source_id=ENV['TDAMERITRADE_SOURCE_KEY']
+      #self.user_id=ENV['TDAMERITRADE_USER_ID']
+      #self.password=ENV['TDAMERITRADE_PASSWORD']
+      self.source_id=options[:source_key]
+      self.user_id=options[:user_id]
+      self.password=options[:password]
     end
 
     def login
@@ -37,7 +48,7 @@ module TDAmeritradeApi
       request.body = "userid=#{@user_id}&password=#{@password}&source=#{@source_id}&version=1.0.0"
       result = http.request(request)
       @login_response = result.body
-
+      puts @login_response
       parse_login_response if login_success?
       login_success?
     end
