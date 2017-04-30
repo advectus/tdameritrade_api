@@ -9,13 +9,21 @@ module TDAmeritradeApi
       uri = URI.parse QUOTE_NEWS_URL
       uri.query = URI.encode_www_form(request_params)
 
+      puts uri
+
       response = HTTParty.get(uri, headers: {'Cookie' => "JSESSIONID=#{@session_id}"}, timeout: 10)
       if response.code != 200
         raise TDAmeritradeApiError, "HTTP response #{response.code}: #{response.body}"
       end
 
       qn_hash = {"error"=>"failed"}
+      puts qn_hash
+      puts response
+      puts response.body
       result_hash = Hash.from_xml(response.body.to_s)
+      puts result_hash
+      puts result_hash['amtd']
+      puts result_hash['amtd']['XML_MULTISYMBOL_NEWS']
       if result_hash['amtd']['result'] == 'OK' then
         qn_hash = result_hash['amtd']
       end

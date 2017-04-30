@@ -29,6 +29,15 @@ module TDAmeritradeApi
         uri = URI.parse CONDITIONALORDER_URL
       end
 
+      built_query = URI.encode_www_form(request_params)
+      puts built_query
+      another_query = built_query.gsub!('&','~')
+      p another_query
+      yet_another_query = CGI.escape(another_query)
+      puts yet_another_query
+      uri.query = URI.encode_www_form({source: @source_id, orderstring: yet_another_query})
+      p uri
+
       response = HTTParty.get(uri, headers: {'Cookie' => "JSESSIONID=#{@session_id}"}, timeout: 10)
       if response.code != 200
         raise TDAmeritradeApiError, "HTTP response #{response.code}: #{response.body}"

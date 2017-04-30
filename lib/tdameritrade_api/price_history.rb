@@ -46,7 +46,7 @@ module TDAmeritradeApi
 
         if symbol_data_raw.error_code == 0
           prices = Array.new
-          while rd.read(2).bytes != [255,255]   # The terminator char is "\xFF\xFF"
+          while rd.read(2) != 'b\xff\xff'   # The terminator char is "\xFF\xFF"
             rd.seek(-2, IO::SEEK_CUR)
             bar = PriceHistoryBarRaw.read(rd)
             puts bar

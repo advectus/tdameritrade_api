@@ -24,6 +24,8 @@ module TDAmeritradeApi
       uri = URI.parse EQUITY_TRADE_URL
       uri.query = URI.encode_www_form(request_params)
 
+      puts uri
+
       response = HTTParty.get(uri, headers: {'Cookie' => "JSESSIONID=#{@session_id}"}, timeout: DEFAULT_TIMEOUT)
       if response.code != 200
         fail "HTTP response #{response.code}: #{response.body}"
