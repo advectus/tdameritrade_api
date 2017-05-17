@@ -46,11 +46,11 @@ module TDAmeritradeApi
 
         if symbol_data_raw.error_code == 0
           prices = Array.new
-          while rd.read(2) != 'b\xff\xff'   # The terminator char is "\xFF\xFF"
+          while rd.read(2).bytes != [255,255]   # The terminator char is "\xFF\xFF"
             rd.seek(-2, IO::SEEK_CUR)
             bar = PriceHistoryBarRaw.read(rd)
             puts bar
-            prices << {
+            price = {
                 open: bar.open.round(2),
                 high: bar.high.round(2),
                 low: bar.low.round(2),
@@ -59,6 +59,8 @@ module TDAmeritradeApi
                 timestamp: Time.at(bar.timestampint/1000),
                 interval: :day
             }
+            puts price
+            prices << price
             #puts "#{bar.open} #{bar.high} #{bar.low} #{bar.close} #{Time.at(bar.timestampint/1000)}"
           end
           symbol_data[:bars] = prices
