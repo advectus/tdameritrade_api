@@ -30,7 +30,7 @@ module TDAmeritradeApi
     private
 
     def build_oc_params(symbol, options)
-      {source: @source_id, symbol: symbol}.merge(options)
+      {source: @source_id, symbol: symbol, quotes: true}.merge(options)
     end
   end
 end
